@@ -1,125 +1,68 @@
 package com.rainowy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 public class Main {
 
-    private static int currentTour = 0;
-    private static int firstUserPoints = 0;
-    private static int secondUserPoints = 0;
-
-
-//    private static int diceNumber = getRandomNumber(1, 7) + getRandomNumber(1, 7);
+    private static final int min = 1;
+    private static final int max = 7;
+    private static final int nrOfTours = 5;
+    private static final int nrOfThrows = 10;
+    private static final User firstUser = new User("Pierwszy gracz", 0);
+    private static final User secondUser = new User("Drugi gracz", 0);
+    private static final String firstUserWon = "Wygrywa pierwszy gracz";
+    private static final String secondUserWon = "Wygrywa drugi gracz";
+    private static int currentTour;
 
     public static void main(String[] args) {
-        // write your code here
 
-        int min = 1;
-        int max = 7;
-        int nrOfTours = 5;
-//        int currentTour = 0;
-
-//        System.out.println("hello");
-//        System.out.println(getRandomNumber(1, 7));
-//        System.out.println(hey);
-
-        List<Integer> list = new ArrayList<>();
-
-        for (int i = 0; i < 100; i++) {
-            list.add(getRandomNumber(1, 7) + getRandomNumber(1, 7));
-
-        }
-//        list.stream()
-//                .forEach(System.out::println);
-
-        while (currentTour < nrOfTours -1) {
-
+        while (currentTour < nrOfTours - 1) {
             for (int i = 1; i <= nrOfTours; i++) {
-                currentTour =i;
+                currentTour = i;
                 System.out.println("TURA NR. " + currentTour);
-                firstUserRound();
-                secondUserRound();
+                computeRound(firstUser);
+                computeRound(secondUser);
             }
         }
-        System.out.println("Gracz pierwszy: liczba punktów " + firstUserPoints);
-        System.out.println("Gracz drugi: liczba punktów " + secondUserPoints);
-
-
+        printMessage();
     }
 
-    public static void firstUserRound(){
+    public static void computeRound(User user) {
 
-        String firstUser = "Gracz pierwszy ";
-
-        int nrOfThrows = 10;
         int currentThrow = 0;
-//        boolean finishRound = false;
 
-        while(currentThrow < nrOfThrows -1){
-
-            for (int i = 1; i <= nrOfThrows ; i++) {
+        while (currentThrow < nrOfThrows - 1) {
+            for (int i = 1; i <= nrOfThrows; i++) {
                 currentThrow = i;
-                if(currentThrow ==1) System.out.println("RZUCA PIERWSZY GRACZ");
+                double diceNumber = getRandomNumber(min, max) + getRandomNumber(min, max);
+                if (currentThrow == 1) System.out.println("RZUCA " + user.getName().toUpperCase(Locale.ROOT));
                 System.out.print("Rzut numer " + currentThrow + ": ");
-                int diceNumber = getRandomNumber(1, 7) + getRandomNumber(1, 7);
-//                System.out.println(currentThrow);
-                if(currentThrow == 1 && (diceNumber == 7 || diceNumber == 11 )) {
-                    System.out.println(firstUser + "zdobywa " + diceNumber + " punktów w pierwszym rzucie i wygrywa turę.");
+
+                if (currentThrow == 1 && (diceNumber == 7 || diceNumber == 11)) {
+                    System.out.println(user.getName() + " zdobywa " + diceNumber + " punktów w pierwszym rzucie i wygrywa turę.");
+                    user.setPoints(user.getPoints() + diceNumber);
                     return;
-                }
-                else if(currentThrow ==1 && (diceNumber == 2 || diceNumber == 12 )) {
-                    System.out.println(firstUser + "zdobywa " + diceNumber + " punktów w pierwszym rzucie i przegrywa turę.");
-                    firstUserPoints += 120;
+                } else if (currentThrow == 1 && (diceNumber == 2 || diceNumber == 12)) {
+                    System.out.println(user.getName() + "zdobywa " + diceNumber + " punktów w pierwszym rzucie i przegrywa turę.");
+                    user.setPoints(user.getPoints() + 120);
                     return;
-                }
-                else if(diceNumber == 5){
-                    System.out.println(firstUser + "zdobywa " + diceNumber + " punktów i wygrywa turę przed czasem.");
+                } else if (diceNumber == 5) {
+                    System.out.println(user.getName() + " zdobywa " + diceNumber + " punktów i wygrywa turę przed czasem.");
+                    user.setPoints(user.getPoints() + diceNumber);
                     return;
-                }
-                else {
-                    System.out.println(firstUser + "zdobywa " + diceNumber + " punktów i rzuca ponownie");
-                    firstUserPoints += diceNumber/currentThrow;
+                } else {
+                    System.out.println(user.getName() + " zdobywa " + diceNumber + " punktów i rzuca ponownie");
+                    double pointsToAdd = diceNumber / currentThrow;
+                    user.setPoints(user.getPoints() + pointsToAdd);
                 }
             }
         }
     }
 
-    public static void secondUserRound(){
-
-        String secondUser = "Gracz drugi";
-
-        int nrOfThrows = 10;
-        int currentThrow = 0;
-//        boolean finishRound = false;
-
-        while(currentThrow < nrOfThrows -1){
-
-            for (int i = 1; i <= nrOfThrows ; i++) {
-                currentThrow = i;
-                if(currentThrow ==1) System.out.println("RZUCA DRUGI GRACZ");
-                System.out.print("Rzut numer " + currentThrow + ": ");
-                int diceNumber = getRandomNumber(1, 7) + getRandomNumber(1, 7);
-//                System.out.println(currentThrow);
-                if(currentThrow == 1 && (diceNumber == 7 || diceNumber == 11 )) {
-                    System.out.println(secondUser + "zdobywa " + diceNumber + " punktów w pierwszym rzucie i wygrywa turę.");
-                    return;
-                }
-                else if(currentThrow ==1 && (diceNumber == 2 || diceNumber == 12 )) {
-                    System.out.println(secondUser + "zdobywa " + diceNumber + " punktów w pierwszym rzucie i przegrywa turę.");
-                    secondUserPoints += 120;
-                    return;
-                }
-                else if(diceNumber == 5){
-                    System.out.println(secondUser + "zdobywa " + diceNumber + " punktów i wygrywa turę przed czasem.");
-                    return;
-                }
-                else {
-                    System.out.println(secondUser + "zdobywa " + diceNumber + " punktów i rzuca ponownie");
-                    secondUserPoints += diceNumber/currentThrow;
-                }
-            }
-        }
+    private static void printMessage() {
+        System.out.printf("Gracz pierwszy: liczba punktów:  %.1f \n", firstUser.getPoints());
+        System.out.printf("Gracz drugi: liczba punktów %.1f \n", secondUser.getPoints());
+        System.out.println((firstUser.getPoints() > secondUser.getPoints()) ? (firstUserWon) : secondUserWon);
     }
 
     public static int getRandomNumber(int min, int max) {
