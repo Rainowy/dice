@@ -6,13 +6,19 @@ public class Main {
 
     public static void main(String[] args) {
 
-//        Dice.initRound();
+        String Ean = "07567817239711";
+        Calendar calendar = new Calendar();
+        FizzBuzz fizzBuzz = new FizzBuzz();
+        Ean ean = new Ean();
 
-        Ean instance = new Ean();
-        String Ean = "0075678164125";
-        System.out.println(instance.check(Ean) ? "Prawidłowy kod EAN " + Ean : "Nieprawidłowy kod EAN " + Ean);
+        ean.validateEan(Ean);
+        fizzBuzz.buzz();
+        calendar.checkDate();
+        Dice.initRound();
 
+
+
+//        Zadanie 5
+//        SELECT COUNT(*) + 1 FROM ExportBatch;
     }
-
-
 }

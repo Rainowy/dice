@@ -27,7 +27,7 @@ public class Dice {
         printMessage();
     }
 
-    public static void computeRound(com.rainowy.User user) {
+    private static void computeRound(com.rainowy.User user) {
 
         int currentThrow = 0;
 
@@ -65,7 +65,7 @@ public class Dice {
         System.out.println((firstUser.getPoints() > secondUser.getPoints()) ? (firstUserWon) : secondUserWon);
     }
 
-    public static int getRandomNumber(int min, int max) {
+    private static int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
 }
